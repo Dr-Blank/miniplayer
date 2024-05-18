@@ -39,6 +39,10 @@ class Miniplayer extends StatefulWidget {
   ///This can be used to hide the BottomNavigationBar.
   final ValueNotifier<double>? valueNotifier;
 
+  ///Gets called with the current percentage of the drag down.
+  ///This can be used to control the volume of the media player.
+  final void Function(double dragDownPercentage)? onDragDown;
+
   ///Deprecated
   @Deprecated(
       "Migrate onDismiss to onDismissed as onDismiss will be used differently in a future version.")
@@ -62,6 +66,7 @@ class Miniplayer extends StatefulWidget {
     this.elevation = 0,
     this.backgroundColor,
     this.valueNotifier,
+    this.onDragDown,
     this.duration = const Duration(milliseconds: 300),
     this.onDismiss,
     this.onDismissed,
@@ -119,6 +124,13 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
       heightNotifier = ValueNotifier(widget.minHeight);
     } else {
       heightNotifier = widget.valueNotifier!;
+    }
+
+    // add listener to dragDownPercentage
+    if (widget.onDragDown != null) {
+      dragDownPercentage.addListener(() {
+        widget.onDragDown!(dragDownPercentage.value);
+      });
     }
 
     _resetAnimationController();
