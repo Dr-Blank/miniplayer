@@ -163,6 +163,8 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
       widget.controller!.removeListener(controllerListener);
     }
 
+    dragDownPercentage.dispose();
+
     super.dispose();
   }
 
